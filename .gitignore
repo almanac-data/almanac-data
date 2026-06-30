@@ -1,0 +1,13 @@
+# Fleet overlay — local only (see docs/DEVELOPMENT.md)
+.mcp.json
+.willow/
+.cursor/
+
+# Symlinks to sibling repos (recreated by scripts/link-repos.sh)
+/almanac-template
+/climate-almanac
+/health-almanac
+/economy-almanac
+/environment-almanac
+/civic-almanac
+/org-dotgithub

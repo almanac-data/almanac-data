@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "willow": {
+      "type": "stdio",
+      "command": "bash",
+      "args": [
+        "/home/sean-campbell/github/willow-2.0/sap/unified_mcp.sh"
+      ],
+      "env": {
+        "WILLOW_AGENT_NAME": "willow",
+        "GROVE_SENDER": "willow",
+        "GROVE_NAME": "willow",
+        "WILLOW_GROVE_ROOT": "/home/sean-campbell/github/safe-app-willow-grove",
+        "WILLOW_PG_DB": "willow_20",
+        "WILLOW_SAFE_ROOT": "/home/sean-campbell/github/SAFE/Applications",
+        "WILLOW_AGENTS_ROOT": "/home/sean-campbell/github/SAFE/Agents",
+        "WILLOW_ROOT": "/home/sean-campbell/github/willow-2.0",
+        "WILLOW_HOME": "/home/sean-campbell/github/.willow",
+        "WILLOW_CONFIG_MODE": "private-config",
+        "WILLOW_INFERENCE_PROVIDER": "auto",
+        "WILLOW_MCP_PROFILE": "core",
+        "WILLOW_PROJECT_ROOT": "/home/sean-campbell/github/almanac-data",
+        "WILLOW_HANDOFF_PROJECT": "almanac-data"
+      }
+    }
+  }
+}

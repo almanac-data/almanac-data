@@ -1,0 +1,44 @@
+{
+  "folders": [
+    {
+      "name": "org — almanac-data",
+      "path": "."
+    },
+    {
+      "name": "engine — almanac-template",
+      "path": "almanac-template"
+    },
+    {
+      "name": "vertical — climate",
+      "path": "climate-almanac"
+    },
+    {
+      "name": "vertical — health",
+      "path": "health-almanac"
+    },
+    {
+      "name": "vertical — economy",
+      "path": "economy-almanac"
+    },
+    {
+      "name": "vertical — environment",
+      "path": "environment-almanac"
+    },
+    {
+      "name": "vertical — civic",
+      "path": "civic-almanac"
+    },
+    {
+      "name": "org profile — .github",
+      "path": "org-dotgithub"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/__pycache__": true,
+      "**/.pytest_cache": true,
+      "**/.ruff_cache": true
+    }
+  }
+}
