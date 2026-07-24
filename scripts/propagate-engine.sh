@@ -12,11 +12,17 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TEMPLATE="${ROOT}/almanac-template"
 VERTICALS=(
-  climate-almanac
-  health-almanac
-  economy-almanac
-  environment-almanac
+  agriculture-almanac
   civic-almanac
+  climate-almanac
+  economy-almanac
+  education-almanac
+  energy-almanac
+  environment-almanac
+  health-almanac
+  justice-almanac
+  science-almanac
+  transportation-almanac
 )
 
 # Paths shared by template and all verticals (identity + catalog excluded).
@@ -26,6 +32,7 @@ ENGINE_PATHS=(
   scripts/build_index.py
   scripts/check_links.py
   scripts/alert_on_dead_links.py
+  scripts/migrate_v1_v2.py
   requirements.txt
   requirements-headless.txt
   pyproject.toml

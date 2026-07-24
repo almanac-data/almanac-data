@@ -14,11 +14,17 @@ Sibling clones are linked here (not copied):
 ```
 almanac-data/                 ← open Cursor here
   almanac-template/           → engine source (PRs merge here first)
-  climate-almanac/            → vertical
-  health-almanac/
-  economy-almanac/
-  environment-almanac/
+  agriculture-almanac/        → vertical
   civic-almanac/
+  climate-almanac/
+  economy-almanac/
+  education-almanac/
+  energy-almanac/
+  environment-almanac/
+  health-almanac/
+  justice-almanac/
+  science-almanac/
+  transportation-almanac/
   org-dotgithub/              → almanac-data/.github org profile repo
   scripts/
     link-repos.sh             # (re)create symlinks after clone

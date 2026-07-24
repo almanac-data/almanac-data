@@ -27,11 +27,17 @@ link() {
 }
 
 link almanac-template
-link climate-almanac
-link health-almanac
-link economy-almanac
-link environment-almanac
+link agriculture-almanac
 link civic-almanac
+link climate-almanac
+link economy-almanac
+link education-almanac
+link energy-almanac
+link environment-almanac
+link health-almanac
+link justice-almanac
+link science-almanac
+link transportation-almanac
 link org-dotgithub almanac-data-dotgithub
 
 echo "Done. Workspace root: $ROOT"

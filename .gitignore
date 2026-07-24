@@ -5,9 +5,15 @@
 
 # Symlinks to sibling repos (recreated by scripts/link-repos.sh)
 /almanac-template
-/climate-almanac
-/health-almanac
-/economy-almanac
-/environment-almanac
+/agriculture-almanac
 /civic-almanac
+/climate-almanac
+/economy-almanac
+/education-almanac
+/energy-almanac
+/environment-almanac
+/health-almanac
+/justice-almanac
+/science-almanac
+/transportation-almanac
 /org-dotgithub
