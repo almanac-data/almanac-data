@@ -32,10 +32,15 @@ Grove; it never ships in git.
 Register with Willow (once per machine, from `willow-2.0`):
 
 ```bash
-./willow.sh project sync almanac-data
+./willow.sh project sync \
+  almanac-data almanac-data-dotgithub almanac-template \
+  climate-almanac health-almanac economy-almanac environment-almanac civic-almanac
+./willow.sh project check almanac-data   # verify wiring
 ```
 
-(`almanac-data` must exist in `willow/fylgja/config/mcp_projects.seed.json`.)
+All ids must exist in `willow/fylgja/config/mcp_projects.seed.json`. Sync materializes
+`.cursor/hooks.json`, `.mcp.json`, and scoped `WILLOW_HANDOFF_PROJECT` per repo (local only;
+gitignored on verticals and org profile).
 
 ## Propagate engine changes
 
