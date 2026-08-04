@@ -42,6 +42,23 @@ Then, **per vertical**: `python scripts/build_index.py` if `build_index.py` chan
 `python scripts/validate.py`, `ruff check .`, open a PR. Never copy `catalog/` or
 `almanac.config.yml` identity fields — only engine paths listed in `propagate-engine.sh`.
 
+**Contributor docs propagate too.** `CONTRIBUTING.md` and `SCHEMA-V2.md` are engine paths.
+They were not, for a long time, and the result was every vertical shipping pre-v2 guidance
+telling contributors to set `last_checked` — a field the v2 schema does not have — while
+running a v2 validator that rejects it. Docs that describe the schema belong to the engine
+that owns the schema.
+
+`AGENTS.md` is deliberately **not** propagated yet: the template's copy documents
+`scripts/recovery_bot.py` and `.github/workflows/recovery-bot.yml`, which no vertical has.
+Propagating it would hand every vertical a repo map pointing at files that do not exist.
+Resolve by shipping that tooling or by splitting the template's guide first.
+
+**Local overrides.** A vertical may own an engine path locally — see `LOCAL_OVERRIDES` in
+`propagate-engine.sh`, which reports them as `o <path> (local override)` and never writes
+them. Today only `climate-almanac:CONTRIBUTING.md`, whose guide is written in its own voice.
+Every override is a file that stops receiving upstream fixes and becomes a steward's job, so
+add one only when the local version says something the generic one genuinely cannot.
+
 `reachability.headless` in each vertical's `almanac.config.yml` is vertical-specific
 (civic/economy: `true`; climate/health/environment: usually `false`).
 
