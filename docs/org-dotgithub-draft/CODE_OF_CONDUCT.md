@@ -19,16 +19,17 @@ the project in public.
 
 ## Reporting
 
-Report unacceptable behavior to the organization maintainers.
+Report unacceptable behavior to **[@rudi193-cmd](https://github.com/rudi193-cmd)**, the
+organization's engine caretaker, by opening a private report through GitHub's **"Report a
+vulnerability"** form on the [`.github` repository's Security tab][report] — the same private
+channel used for security issues, which is the only confidential route GitHub provides
+without publishing an email address. Say plainly that it is a conduct report; it will not be
+treated as a security matter.
 
-<!-- TODO(caretaker): choose ONE reporting route, fill it in, and delete the others.
-     1. Email — needs a real monitored address:
-            conduct@<domain>
-     2. GitHub private vulnerability-style report — enable Private Reporting on the .github repo
-        and link the form here.
-     3. Direct message to a named maintainer — list the GitHub handle(s) explicitly.
-     Do not ship this file with the placeholder unresolved: a code of conduct with no working
-     reporting channel is worse than none, because it promises a process that does not exist. -->
+[report]: https://github.com/almanac-data/.github/security/advisories/new
+
+If the report concerns that maintainer, or you would rather not use GitHub, contact any other
+organization owner directly.
 
 Reports are handled confidentially. Whoever receives one will not act on a matter in which they
 are personally involved; where that cannot be avoided, they will say so and hand it to someone

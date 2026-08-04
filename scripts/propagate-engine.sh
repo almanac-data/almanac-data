@@ -41,6 +41,7 @@ ENGINE_PATHS=(
   .github/workflows/link-check.yml
   CONTRIBUTING.md
   SCHEMA-V2.md
+  AGENTS.md
 )
 
 # Engine paths a specific vertical owns locally, as "vertical:path".
@@ -51,10 +52,11 @@ ENGINE_PATHS=(
 # a steward's work". Keep this list short and justified — every entry is a file
 # that stops receiving upstream fixes and becomes someone's job to maintain.
 LOCAL_OVERRIDES=(
-  # climate-almanac's guide is rewritten in its own voice and explains that the
+  # climate-almanac's guides are rewritten in its own voice and explain that the
   # vertical exists because climate.gov was decommissioned — context no generic
-  # copy carries. Its v2 correctness is maintained by hand.
+  # copy carries. Their v2 correctness is maintained by hand.
   "climate-almanac:CONTRIBUTING.md"
+  "climate-almanac:AGENTS.md"
 )
 
 is_local_override() {
