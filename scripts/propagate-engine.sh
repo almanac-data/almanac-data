@@ -39,7 +39,31 @@ ENGINE_PATHS=(
   tests/test_catalog.py
   .github/workflows/ci.yml
   .github/workflows/link-check.yml
+  CONTRIBUTING.md
+  SCHEMA-V2.md
 )
+
+# Engine paths a specific vertical owns locally, as "vertical:path".
+#
+# The escape hatch that makes propagating prose safe. Code is identical everywhere
+# by definition; documentation sometimes shouldn't be, and without this the only
+# options are "never propagate docs" (how they went stale) or "silently overwrite
+# a steward's work". Keep this list short and justified — every entry is a file
+# that stops receiving upstream fixes and becomes someone's job to maintain.
+LOCAL_OVERRIDES=(
+  # climate-almanac's guide is rewritten in its own voice and explains that the
+  # vertical exists because climate.gov was decommissioned — context no generic
+  # copy carries. Its v2 correctness is maintained by hand.
+  "climate-almanac:CONTRIBUTING.md"
+)
+
+is_local_override() {
+  local vertical="$1" rel="$2" entry
+  for entry in "${LOCAL_OVERRIDES[@]}"; do
+    [[ "$entry" == "${vertical}:${rel}" ]] && return 0
+  done
+  return 1
+}
 
 APPLY=0
 for arg in "$@"; do
@@ -60,11 +84,15 @@ if [[ ! -d "$TEMPLATE" ]]; then
 fi
 
 copy_file() {
-  local rel="$1" dest_root="$2"
+  local rel="$1" dest_root="$2" vertical="$3"
   local src="${TEMPLATE}/${rel}"
   local dst="${dest_root}/${rel}"
   if [[ ! -f "$src" ]]; then
     echo "  SKIP missing in template: $rel" >&2
+    return 0
+  fi
+  if is_local_override "$vertical" "$rel"; then
+    echo "  o $rel (local override — not propagated)"
     return 0
   fi
   if [[ -f "$dst" ]] && cmp -s "$src" "$dst"; then
@@ -88,7 +116,7 @@ for vertical in "${VERTICALS[@]}"; do
   fi
   echo "=== $vertical ==="
   for rel in "${ENGINE_PATHS[@]}"; do
-    copy_file "$rel" "$dest"
+    copy_file "$rel" "$dest" "$vertical"
   done
   echo
 done
