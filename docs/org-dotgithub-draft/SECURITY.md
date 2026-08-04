@@ -21,12 +21,14 @@ ordinary catalog maintenance — open a normal issue, or a PR flipping the entry
 
 Please report privately rather than in a public issue.
 
-<!-- TODO(caretaker): enable GitHub Private Vulnerability Reporting on each repo
-     (Settings → Code security and analysis → Private vulnerability reporting), then replace
-     this comment with the standard line:
-         Use GitHub's "Report a vulnerability" button on the affected repository's Security tab.
-     If you would rather take reports by email, put a real monitored address here instead.
-     Do not ship this file without one working private channel. -->
+Use GitHub's **"Report a vulnerability"** button on the affected repository's **Security**
+tab. That opens a private advisory visible only to the maintainers, and it needs no email
+address to be published or monitored.
+
+> **Before this file goes live:** Private Vulnerability Reporting must be switched on, or
+> that button will not exist. It can be enabled org-wide for all current and future
+> repositories under **Organization Settings → Code security → Private vulnerability
+> reporting**, which is one switch rather than one per repo.
 
 Useful reports include: the repository and file involved, what an attacker gains, and the
 smallest input that demonstrates it. A proof-of-concept catalog entry or workflow trigger is

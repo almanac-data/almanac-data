@@ -35,10 +35,22 @@ locally, so the org copies apply everywhere immediately.
 
 ## Before publishing
 
-Each file below carries `TODO(caretaker)` markers where a real value is needed — reporting
-contacts, mainly. Nothing invents an address, so every marker must be resolved or deliberately
-removed first. They are HTML comments and will not render, which means an unresolved one fails
-quietly rather than loudly.
+**One switch has to be flipped, or two of these files promise a channel that does not exist.**
+
+`SECURITY.md` and `CODE_OF_CONDUCT.md` both route reports through GitHub's private advisory
+form. That form only appears when **Private Vulnerability Reporting** is enabled — do it
+org-wide under **Organization Settings → Code security → Private vulnerability reporting**
+(one switch, covers current and future repos) rather than per repository.
+
+No email address is invented anywhere in these files, and none is needed.
+
+**One judgment call to check:** `CODE_OF_CONDUCT.md` names
+[@rudi193-cmd](https://github.com/rudi193-cmd) as the conduct contact, on the grounds that
+they are the engine caretaker and the org's only consistently active maintainer. That is an
+assumption about who holds the role, not a fact anyone stated — change the name if it should
+be someone else, or add a second contact so a report about that maintainer has somewhere
+else to go. The file already tells reporters to approach another owner in that case, but a
+named alternative is better than an abstract one.
 
 ## Not included
 
