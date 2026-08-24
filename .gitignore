@@ -17,3 +17,6 @@
 /science-almanac
 /transportation-almanac
 /org-dotgithub
+
+# Local clone of almanac-data/.github (also linked as org-dotgithub)
+/dotgithub
