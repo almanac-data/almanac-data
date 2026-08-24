@@ -1,23 +1,30 @@
-# Org setup playbook — almanac-data (template for the other six)
+# Org setup playbook — fleet (seven orgs)
 
 How to bring a GitHub organization from "repos exist" to "fully configured" using
-`gh` from this workspace. **almanac-data** is the practice org; repeat the same
-steps for each sibling org once this one is green.
+`gh` from this workspace. **almanac-data** was the practice org; the same pattern
+applies to the six siblings.
+
+**As of 2026-08-24:** all seven orgs have live profiles, community health files,
+`FUNDING.yml` → Sponsors (`rudi193-cmd`), GitHub-recommended code security
+**enforced**, and 2FA **required**. Almanac verticals are under `almanac-data`.
+Remaining placement work (product transfers into empty shells) is listed at the
+end — not org-profile setup.
 
 ## What `gh` can do from here
 
-Authenticated as **`rudi193-cmd`** — org **admin** on `almanac-data`.
+Authenticated as **`rudi193-cmd`** — org **admin** on all seven, with `admin:org`
++ `repo` scopes.
 
 | Capability | Works today? | Token / role needed |
 |------------|--------------|---------------------|
 | List/view repos, PRs, issues, reviews | Yes | `repo` |
 | Push branches, open PRs | Yes | `repo` |
 | Patch org profile (description, blog, …) | Yes | org admin |
-| Edit `almanac-data/.github` (local: `dotgithub/`) | Yes | `repo` + ADMIN on `.github` |
-| Attach/enforce code security configs | **No** — 403 | `admin:org` |
-| Set org defaults (2FA, member permissions) | **Browser** | org owner in Settings UI |
+| Edit `ORG/.github` (local: `dotgithub/` for Almanac) | Yes | `repo` + ADMIN on `.github` |
+| Attach/enforce code security configs | Yes | `admin:org` |
+| Set org 2FA / some member defaults | Partial — prefer **Browser** for 2FA | org owner in Settings UI |
 
-Refresh scopes when you need org security APIs:
+Refresh scopes when security APIs return 403:
 
 ```bash
 gh auth refresh -h github.com -s admin:org
@@ -33,37 +40,36 @@ gh auth status   # confirm admin:org appears
 └─────────────────────────────────────────────────────────┘
                           │
 ┌─────────────────────────────────────────────────────────┐
-│  almanac-data/.github  (local: dotgithub/)              │
+│  ORG/.github  (Almanac local: dotgithub/)               │
 │  profile/, CODE_OF_CONDUCT, SECURITY, SUPPORT, …        │
 │  Org-wide defaults — fallback for repos without locals  │
 └─────────────────────────────────────────────────────────┘
                           │
 ┌─────────────────────────────────────────────────────────┐
-│  Per-repo files (verticals, template, meta)             │
-│  CONTRIBUTING, ISSUE_TEMPLATE, CI — owned by engine     │
+│  Per-repo files (verticals, products, template)         │
+│  CONTRIBUTING, ISSUE_TEMPLATE, CI — product or engine   │
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Key rule:** org-level `CONTRIBUTING.md` never overrides vertical copies. Org-level
-`CODE_OF_CONDUCT.md`, `SECURITY.md`, and `SUPPORT.md` apply everywhere because
-verticals don't ship their own.
+**Key rule (Almanac):** org-level `CONTRIBUTING.md` never overrides vertical copies.
+Org-level `CODE_OF_CONDUCT.md`, `SECURITY.md`, and `SUPPORT.md` apply everywhere
+because verticals don't ship their own.
 
-## Checklist — almanac-data current state (2026-08-23)
+## Checklist — fleet current state (2026-08-24)
 
 ### A. Org profile (Settings → General)
 
-| Item | Current | Target |
-|------|---------|--------|
-| Display name | The Almanac | ✓ |
-| Description | profile tagline | ✓ |
-| Social links (blog, location, email) | empty | optional |
-| Default repository permission | read | ✓ |
-| Default branch name | main | ✓ |
-| Member repo creation | all types allowed | tighten if desired |
-| 2FA requirement | off | **enable** for other orgs with collaborators |
-| Dependabot/secret scanning for new repos | off at org level | handled by security config (below) |
+| Item | Status |
+|------|--------|
+| Display name + description | ✓ all seven |
+| Social links (blog, location, email) | empty — optional |
+| Default repository permission | read |
+| Default branch name | `main` (some products still use `master`) |
+| Member repo creation / deletion | still open — **tighten when collaborators join** |
+| 2FA requirement | ✓ **enabled** on all seven |
+| Dependabot / secret scanning for new repos | via security config (below) |
 
-Patch description from CLI:
+Patch description from CLI (example):
 
 ```bash
 gh api -X PATCH orgs/almanac-data \
@@ -72,63 +78,46 @@ gh api -X PATCH orgs/almanac-data \
 
 ### B. Code security (Settings → Code security → Configurations)
 
-A **"GitHub recommended"** configuration (id `17`) already exists with
-`private_vulnerability_reporting: enabled` — but **`enforcement: unenforced`**
-and **not attached** to any repo. Civic-almanac still shows secret scanning
-disabled.
+**Done fleet-wide:** attach **GitHub recommended** (global id `17`) to all repos,
+set as default for new public repos, and **Enforce** in the browser (API cannot
+PATCH global configs: `400 Global configurations are not allowed to be updated`).
 
-**Do this once** (after `gh auth refresh -s admin:org`):
+Re-run attach / default if a new org appears:
 
 ```bash
-./scripts/setup-almanac-org.sh --apply-security
+./scripts/setup-fleet-org.sh --apply-security   # needs admin:org
 ```
 
-The org's existing **"GitHub recommended"** config (id `17`) is a **global** preset —
-GitHub does not allow PATCHing global configs (`400 Global configurations are not
-allowed to be updated`). The script attaches it to all repos and sets it as the
-default for new public repos. That enables PVR, secret scanning, and Dependabot
-alerts without needing enforcement.
+Enforce URL pattern (per org):
 
-To **enforce** (block repos from opting out), either:
-- **Browser:** Settings → Code security → Configurations → GitHub recommended → Enforce
-- **API:** create an org-owned configuration (`target_type: organization`) with
-  `enforcement: enforced`, then attach that instead
-
-Or manually in the browser:
-
-1. **Organization settings → Code security → Configurations**
-2. Open **GitHub recommended** → **Enforce configuration**
-3. **Apply to all repositories** (or attach per-repo)
-4. Set as **default for new public repositories**
+`https://github.com/organizations/ORG/settings/security_products/configurations/view/17`
 
 This enables the **Report a vulnerability** button that `SECURITY.md` and
 `CODE_OF_CONDUCT.md` route reporters to.
 
-### C. Community health files (`dotgithub/` → PR to `almanac-data/.github`)
+### C. Community health files (`ORG/.github`)
 
-| File | Status | Notes |
-|------|--------|-------|
-| `profile/README.md` | live, counts stale | sync from `catalog.json` |
-| `CODE_OF_CONDUCT.md` | **missing** | publish from `docs/org-dotgithub-draft/` |
-| `SECURITY.md` | **missing** | publish from draft; requires step B first |
-| `SUPPORT.md` | live, short | replace with draft (full routing table) |
-| `CONTRIBUTING.md` | live, short | replace with draft (org-scope note) |
-| `pull_request_template.md` | ✓ | |
-| `ISSUE_TEMPLATE/` | ✓ | fix security contact link |
-| `FUNDING.yml` | skipped | no funding channels |
+| File | Status |
+|------|--------|
+| `profile/README.md` | ✓ live on all seven |
+| `CODE_OF_CONDUCT.md` | ✓ |
+| `SECURITY.md` | ✓ |
+| `SUPPORT.md` | ✓ |
+| `CONTRIBUTING.md` | ✓ |
+| `pull_request_template.md` / `ISSUE_TEMPLATE/` | ✓ where drafted |
+| `FUNDING.yml` | ✓ → `github: [rudi193-cmd]` |
 
-Workflow:
+Almanac local clone: `dotgithub/` (gitignored name for the `.github` repo).
 
 ```bash
 cd dotgithub
-git checkout -b org/setup-community-health
+git checkout -b org/…
 # … edit files …
-git add -A && git commit -m "…"
 git push -u origin HEAD
 gh pr create --repo almanac-data/.github --title "…" --body "…"
 ```
 
-### D. Org profile README — dataset counts
+### D. Org profile README — Almanac dataset counts
 
 Counts must match each vertical's `catalog.json`. Refresh:
 
@@ -136,24 +125,26 @@ Counts must match each vertical's `catalog.json`. Refresh:
 ./scripts/org-profile-counts.sh
 ```
 
-Edit `dotgithub/profile/README.md` table, commit in the same PR.
+Edit `dotgithub/profile/README.md` table, commit in the profile PR.
 
-### E. Per-repo defaults (optional, scriptable)
+### E. Per-repo defaults
 
-Reasonable defaults for almanac verticals:
+Applied fleet-wide where appropriate:
 
-| Setting | Current (sample) | Suggested |
-|---------|------------------|-----------|
-| `delete_branch_on_merge` | false | **true** |
-| `has_wiki` | true | **false** |
-| `allow_merge_commit` | true | false (squash-only) or keep all three |
-| Branch protection on `main` | varies | require CI + 1 review for template |
+| Setting | Target |
+|---------|--------|
+| `delete_branch_on_merge` | **true** |
+| `has_wiki` | **false** |
+| Auto-merge | on for release-please product repos |
+| Branch ruleset requiring check `test` | release product repos |
 
 ```bash
-./scripts/setup-almanac-org.sh --apply-repo-defaults   # after script exists
+./scripts/setup-fleet-org.sh --apply-repo-defaults
+./scripts/setup-fleet-org.sh --apply-auto-merge
+./scripts/setup-fleet-org.sh --apply-branch-protection
 ```
 
-### F. What verticals own (not org setup)
+### F. What Almanac verticals own (not org setup)
 
 - `catalog/*.yaml`, `catalog.json` — stewards
 - `CONTRIBUTING.md`, `ISSUE_TEMPLATE/` — engine via `almanac-template` propagation
@@ -162,9 +153,14 @@ Reasonable defaults for almanac verticals:
 Do **not** duplicate vertical issue templates at org level unless you want them
 on `almanac-data` and `almanac-template` only.
 
-## Fleet script (all seven orgs)
+### G. Package metadata after transfers
 
-Prefer this over looping `setup-almanac-org.sh` by hand:
+`pyproject.toml` `[project.urls]` often still pointed at `rudi193-cmd/…` after
+repo transfer. Keep Homepages/Repository/Issues on the **org** path so PyPI and
+docs resolve. Intentional exceptions (e.g. a Rubric URL into a still-personal
+`willow-seed`) can remain until that upstream moves.
+
+## Fleet script (all seven orgs)
 
 ```bash
 ./scripts/setup-fleet-org.sh --audit              # org + repo defaults table
@@ -178,16 +174,25 @@ Prefer this over looping `setup-almanac-org.sh` by hand:
 Identical Dependabot + auto-merge workflows live in
 [`fleet-ci-templates/python-product/`](../fleet-ci-templates/README.md).
 
-## Repeat for the other six orgs
+## Repeat for a new org
 
-1. `gh auth status` — confirm account has org admin
-2. `gh auth refresh -s admin:org` if automating security
-3. Clone or link `ORG/.github` locally (names starting with `.` need a non-dot
-   folder name, same pattern as `dotgithub/`)
-4. Copy community health files; adjust conduct contact and org name
-5. Run security configuration attach + enforce
-6. Open org profile PR
-7. Spot-check one vertical repo: Security tab shows **Report a vulnerability**
+1. `gh auth status` — confirm account has org admin + `admin:org` if automating security
+2. Clone or link `ORG/.github` locally (names starting with `.` need a non-dot folder)
+3. Copy community health files; adjust conduct contact and org name
+4. Run security configuration attach + **Enforce** in browser
+5. Open org profile PR; add `FUNDING.yml` if Sponsors apply
+6. Spot-check one product repo: Security tab shows **Report a vulnerability**
+7. After transferring repos in, fix `pyproject.toml` Homepages (see G)
+
+## Still open (placement / policy — not profile setup)
+
+| Item | Notes |
+|------|--------|
+| Transfer `rudi193-cmd/Forge` → `forge-play` | org is profile-only today |
+| Transfer `rudi193-cmd/terpsi-music` → `terpsi-programs` | same |
+| Optional: `willow-grove` → `willow-memory` | still personal |
+| Tighten member create/delete | when orgs are no longer solo |
+| Org teams | only if you want role separation |
 
 ## Local workspace wiring
 
@@ -218,6 +223,9 @@ gh api repos/almanac-data/civic-almanac --jq '.security_and_analysis'
 
 # Dataset counts for profile table
 ./scripts/org-profile-counts.sh
+
+# Fleet defaults
+./scripts/setup-fleet-org.sh --audit
 
 # Community health score (GitHub UI is more informative than API here)
 gh repo list almanac-data --limit 20
