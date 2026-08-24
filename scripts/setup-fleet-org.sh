@@ -28,6 +28,7 @@ Actions:
   --apply-repo-defaults   delete_branch_on_merge=true, has_wiki=false
   --apply-security        Attach GitHub recommended config (#17) to all repos
   --apply-auto-merge      Enable allow_auto_merge on release-please product repos
+  --apply-branch-protection  Ruleset: PR required + status check "test" on default branch
 
 Options:
   ORG=<name>              Limit to one org (default: all seven)
@@ -47,6 +48,7 @@ while [[ $# -gt 0 ]]; do
     --apply-repo-defaults) ACTION=repos; shift ;;
     --apply-security) ACTION=security; shift ;;
     --apply-auto-merge) ACTION=auto_merge; shift ;;
+    --apply-branch-protection) ACTION=branch_protection; shift ;;
     --dry-run) DRY_RUN=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown option: $1" >&2; usage; exit 1 ;;
@@ -185,10 +187,76 @@ apply_auto_merge() {
   done
 }
 
+# Idempotent: skip if any ruleset already requires the aggregate "test" check.
+repo_has_test_check() {
+  local full="$1" id
+  while IFS= read -r id; do
+    [[ -z "$id" ]] && continue
+    if gh api "repos/$full/rulesets/$id" \
+      --jq '[.rules[]? | select(.type=="required_status_checks")
+             | .parameters.required_status_checks[]?.context] | any(.=="test")' \
+      | grep -q true; then
+      return 0
+    fi
+  done < <(gh api "repos/$full/rulesets" --jq '.[].id')
+  return 1
+}
+
+apply_branch_protection() {
+  for full in "${RELEASE_REPOS[@]}"; do
+    if [[ -n "$ORG" && "$full" != "$ORG/"* ]]; then
+      continue
+    fi
+    echo "==> ${full}"
+    if repo_has_test_check "$full"; then
+      echo "  already requires check 'test' — skip"
+      continue
+    fi
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+      echo "DRY-RUN: create ruleset require-test-for-merge on $full"
+      continue
+    fi
+    echo "+ create ruleset require-test-for-merge"
+    gh api -X POST "repos/$full/rulesets" --input - >/dev/null <<'EOF'
+{
+  "name": "require-test-for-merge",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": { "include": ["~DEFAULT_BRANCH"], "exclude": [] }
+  },
+  "rules": [
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 0,
+        "dismiss_stale_reviews_on_push": false,
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false,
+        "allowed_merge_methods": ["merge", "squash", "rebase"]
+      }
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [{ "context": "test" }]
+      }
+    },
+    { "type": "non_fast_forward" }
+  ]
+}
+EOF
+  done
+}
+
 case "$ACTION" in
   audit) audit ;;
   report_ci) report_ci ;;
   repos) apply_repo_defaults ;;
   security) apply_security ;;
   auto_merge) apply_auto_merge ;;
+  branch_protection) apply_branch_protection ;;
 esac

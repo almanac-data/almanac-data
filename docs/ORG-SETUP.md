@@ -172,6 +172,7 @@ Prefer this over looping `setup-almanac-org.sh` by hand:
 ./scripts/setup-fleet-org.sh --apply-repo-defaults
 ./scripts/setup-fleet-org.sh --apply-security     # needs admin:org
 ./scripts/setup-fleet-org.sh --apply-auto-merge   # release-please product repos
+./scripts/setup-fleet-org.sh --apply-branch-protection  # require check "test"
 ```
 
 Identical Dependabot + auto-merge workflows live in
