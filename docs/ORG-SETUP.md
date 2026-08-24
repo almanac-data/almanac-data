@@ -135,6 +135,7 @@ Applied fleet-wide where appropriate:
 |---------|--------|
 | `delete_branch_on_merge` | **true** |
 | `has_wiki` | **false** |
+| Merge methods | **merge** + **rebase** only (`allow_squash_merge=false`) |
 | Auto-merge | on for release-please product repos |
 | Branch ruleset requiring check `test` | release product repos |
 

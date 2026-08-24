@@ -25,7 +25,7 @@ Usage: ./scripts/setup-fleet-org.sh <action> [options]
 Actions:
   --audit                 Org + repo defaults + security enforcement table
   --report-ci             Workflow inventory across product repos
-  --apply-repo-defaults   delete_branch_on_merge=true, has_wiki=false
+  --apply-repo-defaults   delete_branch_on_merge, no wiki, merge+rebase only (no squash)
   --apply-security        Attach GitHub recommended config (#17) to all repos
   --apply-auto-merge      Enable allow_auto_merge on release-please product repos
   --apply-branch-protection  Ruleset: PR required + status check "test" on default branch
@@ -152,7 +152,10 @@ apply_repo_defaults() {
       echo "  ${name}"
       run gh api -X PATCH "repos/${org}/${name}" \
         -f delete_branch_on_merge=true \
-        -F has_wiki=false
+        -F has_wiki=false \
+        -F allow_squash_merge=false \
+        -F allow_merge_commit=true \
+        -F allow_rebase_merge=true
     done < <(gh repo list "$org" --limit 100 --json name -q '.[].name')
   done < <(orgs)
 }
@@ -234,7 +237,7 @@ apply_branch_protection() {
         "require_code_owner_review": false,
         "require_last_push_approval": false,
         "required_review_thread_resolution": false,
-        "allowed_merge_methods": ["merge", "squash", "rebase"]
+        "allowed_merge_methods": ["merge", "rebase"]
       }
     },
     {
