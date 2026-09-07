@@ -24,11 +24,14 @@ Usage: ./scripts/setup-fleet-org.sh <action> [options]
 
 Actions:
   --audit                 Org + repo defaults + security enforcement table
+  --audit-protection      Ruleset / PR rule / status check / legacy classic protection, per repo
   --report-ci             Workflow inventory across product repos
   --apply-repo-defaults   delete_branch_on_merge, no wiki, merge+rebase only (no squash)
   --apply-security        Attach GitHub recommended config (#17) to all repos
   --apply-auto-merge      Enable allow_auto_merge on release-please product repos
-  --apply-branch-protection  Ruleset: PR required + status check "test" on default branch
+  --apply-branch-protection  Ruleset "require-test-for-merge" on EVERY non-archived repo:
+                             PR required + non_fast_forward, plus status check "test" where
+                             the repo actually emits one. Idempotent; archived repos skipped.
 
 Options:
   ORG=<name>              Limit to one org (default: all seven)
@@ -36,6 +39,8 @@ Options:
 
 Examples:
   ./scripts/setup-fleet-org.sh --audit
+  ./scripts/setup-fleet-org.sh --audit-protection
+  ORG=forge-play ./scripts/setup-fleet-org.sh --apply-branch-protection --dry-run
   ORG=homestead-affairs ./scripts/setup-fleet-org.sh --apply-repo-defaults
   ./scripts/setup-fleet-org.sh --apply-security --dry-run
 EOF
@@ -44,6 +49,7 @@ EOF
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --audit) ACTION=audit; shift ;;
+    --audit-protection) ACTION=audit_protection; shift ;;
     --report-ci) ACTION=report_ci; shift ;;
     --apply-repo-defaults) ACTION=repos; shift ;;
     --apply-security) ACTION=security; shift ;;
@@ -190,41 +196,71 @@ apply_auto_merge() {
   done
 }
 
-# Idempotent: skip if any ruleset already requires the aggregate "test" check.
-repo_has_test_check() {
-  local full="$1" id
-  while IFS= read -r id; do
-    [[ -z "$id" ]] && continue
-    if gh api "repos/$full/rulesets/$id" \
-      --jq '[.rules[]? | select(.type=="required_status_checks")
-             | .parameters.required_status_checks[]?.context] | any(.=="test")' \
-      | grep -q true; then
-      return 0
-    fi
-  done < <(gh api "repos/$full/rulesets" --jq '.[].id')
-  return 1
+# How many rulesets does this repo have? -1 means "could not tell".
+#
+# The distinction matters and cost a bug to learn. `--jq length` on the error
+# object GitHub returns for an inaccessible repo (a private one on Free, where
+# repo rules need Pro) counts its KEYS, not rulesets — three of them — so the
+# repo reported as protected when nothing had been read at all. An audit that
+# answers "yes" where it means "I could not look" hides exactly the gap it
+# exists to find. Guard on the type, not the count.
+repo_ruleset_count() {
+  local out
+  out="$(gh api "repos/$1/rulesets" --jq 'if type == "array" then length else -1 end' 2>/dev/null)" || { echo -1; return 0; }
+  [[ -z "$out" ]] && out=-1
+  echo "$out"
 }
 
-apply_branch_protection() {
-  for full in "${RELEASE_REPOS[@]}"; do
-    if [[ -n "$ORG" && "$full" != "$ORG/"* ]]; then
-      continue
-    fi
-    echo "==> ${full}"
-    if repo_has_test_check "$full"; then
-      echo "  already requires check 'test' — skip"
-      continue
-    fi
-    if [[ "$DRY_RUN" -eq 1 ]]; then
-      echo "DRY-RUN: create ruleset require-test-for-merge on $full"
-      continue
-    fi
-    echo "+ create ruleset require-test-for-merge"
-    gh api -X POST "repos/$full/rulesets" --input - >/dev/null <<'EOF'
+repo_has_ruleset() {
+  [[ "$(repo_ruleset_count "$1")" -gt 0 ]]
+}
+
+# Can this repo actually produce a check named "test"?
+#
+# This decides which variant it gets, and getting it wrong is not cosmetic:
+# requiring a check a repo never emits leaves every PR permanently unmergeable.
+# Ten repos in the fleet are in that position today — the seven `.github`
+# repos plus almanac-data, willow-data-vault and oakenscrolls-office — and
+# they carry the pull_request rule without the status check for this reason.
+#
+# The evidence is the default branch's own check runs. A repo that has run CI
+# has told us the answer; a repo that has not gets the no-check variant and a
+# note, and gains the check on a later run of this action.
+repo_offers_test_check() {
+  local full="$1" def
+  def="$(gh api "repos/$full" --jq '.default_branch' 2>/dev/null)" || return 1
+  [[ -z "$def" ]] && return 1
+  gh api "repos/$full/commits/$def/check-runs" \
+    --jq '[.check_runs[]?.name] | any(. == "test")' 2>/dev/null | grep -q true
+}
+
+# The fleet standard, emitted to stdout. $1 = "checks" | "no-checks".
+#
+# Kept byte-identical to what the 36 provisioned repos carry, including the
+# two fields an earlier version of this script omitted: bypass_actors, without
+# which an org admin cannot bypass the rule, and
+# require_extra_approval_for_unattributed_changes. A repo provisioned by the
+# old version did not match its neighbours, and nothing reported the drift.
+ruleset_json() {
+  local checks_rule=""
+  if [[ "$1" == "checks" ]]; then
+    checks_rule='{
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [{ "context": "test" }]
+      }
+    },'
+  fi
+  cat <<JSON
 {
   "name": "require-test-for-merge",
   "target": "branch",
   "enforcement": "active",
+  "bypass_actors": [
+    { "actor_id": null, "actor_type": "OrganizationAdmin", "bypass_mode": "always" }
+  ],
   "conditions": {
     "ref_name": { "include": ["~DEFAULT_BRANCH"], "exclude": [] }
   },
@@ -237,26 +273,96 @@ apply_branch_protection() {
         "require_code_owner_review": false,
         "require_last_push_approval": false,
         "required_review_thread_resolution": false,
+        "require_extra_approval_for_unattributed_changes": true,
         "allowed_merge_methods": ["merge", "rebase"]
       }
     },
-    {
-      "type": "required_status_checks",
-      "parameters": {
-        "strict_required_status_checks_policy": true,
-        "do_not_enforce_on_create": false,
-        "required_status_checks": [{ "context": "test" }]
-      }
-    },
+    ${checks_rule}
     { "type": "non_fast_forward" }
   ]
 }
-EOF
-  done
+JSON
+}
+
+# Report which repos are protected and how. The audit that would have caught
+# forge-play/Forge and forge-play/forge-workshop sitting on classic branch
+# protection with required_pull_request_reviews null — the test check
+# required, and a direct push to the default branch permitted anyway.
+audit_protection() {
+  printf '%-40s %-8s %-9s %-8s %-7s %s\n' "REPO" "ARCHIVED" "RULESET" "PR" "CHECKS" "CLASSIC"
+  printf '%-40s %-8s %-9s %-8s %-7s %s\n' "----" "--------" "-------" "--" "------" "-------"
+  while IFS= read -r org; do
+    while IFS=$'\t' read -r full arch def; do
+      [[ -z "$full" ]] && continue
+      local types pr checks classic rs count
+      count="$(repo_ruleset_count "$full")"
+      if [[ "$count" -lt 0 ]]; then
+        # Not readable — say so. Never report an unread repo as protected.
+        printf '%-40s %-8s %-9s %-8s %-7s %s\n' "$full" "$arch" "?" "?" "?" "unreadable (private on Free? needs Pro)"
+        continue
+      fi
+      [[ "$count" -gt 0 ]] && rs=yes || rs="NO"
+      types="$(gh api "repos/$full/rules/branches/$def" --jq '[.[].type] | unique | join(",")' 2>/dev/null || echo "?")"
+      case "$types" in *pull_request*) pr=yes ;; *) pr=NO ;; esac
+      case "$types" in *required_status_checks*) checks=yes ;; *) checks=no ;; esac
+      if gh api "repos/$full/branches/$def/protection" >/dev/null 2>&1; then
+        classic="PRESENT (legacy — two sources of truth)"
+      else
+        classic="-"
+      fi
+      printf '%-40s %-8s %-9s %-8s %-7s %s\n' "$full" "$arch" "$rs" "$pr" "$checks" "$classic"
+    done < <(gh api "orgs/$org/repos?per_page=100" --paginate \
+               --jq '.[] | [.full_name, (.archived|tostring), (.default_branch // "-")] | @tsv')
+  done < <(orgs)
+}
+
+apply_branch_protection() {
+  local scope_desc="every non-archived repo"
+  [[ -n "$ORG" ]] && scope_desc="every non-archived repo in $ORG"
+  echo "Scope: ${scope_desc}. Idempotent — a repo that already has a ruleset is skipped."
+  while IFS= read -r org; do
+    while IFS=$'\t' read -r full arch; do
+      [[ -z "$full" ]] && continue
+      if [[ "$arch" == "true" ]]; then
+        echo "==> ${full}"
+        echo "  archived — skip"
+        continue
+      fi
+      echo "==> ${full}"
+      local count
+      count="$(repo_ruleset_count "$full")"
+      if [[ "$count" -lt 0 ]]; then
+        # Could not read the existing rulesets. Creating one blind risks a
+        # duplicate on a repo that is already protected, so refuse and say why.
+        echo "  cannot read rulesets (private on Free? needs Pro) — skip, not guessing"
+        continue
+      fi
+      if [[ "$count" -gt 0 ]]; then
+        echo "  already has a ruleset — skip"
+        continue
+      fi
+      local variant note
+      if repo_offers_test_check "$full"; then
+        variant=checks
+        note="requires check 'test'"
+      else
+        variant=no-checks
+        note="no 'test' check seen on the default branch; PR rule only. Re-run after its first CI run to add the check."
+      fi
+      if [[ "$DRY_RUN" -eq 1 ]]; then
+        echo "DRY-RUN: create ruleset require-test-for-merge (${variant}) — ${note}"
+        continue
+      fi
+      echo "+ create ruleset require-test-for-merge (${variant}) — ${note}"
+      ruleset_json "$variant" | gh api -X POST "repos/$full/rulesets" --input - >/dev/null
+    done < <(gh api "orgs/$org/repos?per_page=100" --paginate \
+               --jq '.[] | [.full_name, (.archived|tostring)] | @tsv')
+  done < <(orgs)
 }
 
 case "$ACTION" in
   audit) audit ;;
+  audit_protection) audit_protection ;;
   report_ci) report_ci ;;
   repos) apply_repo_defaults ;;
   security) apply_security ;;
