@@ -25,7 +25,7 @@ file by that name here would be read as this directory's own readme.
 GitHub uses an org-level community health file **only for repos that do not define their own**.
 It is a fallback, never an override.
 
-This matters for `CONTRIBUTING.md`: all eleven verticals ship their own, so the org-level copy
+This matters for `CONTRIBUTING.md`: every vertical ships its own, so the org-level copy
 will never render on `health-almanac` or any sibling. It covers only repos with no local file —
 today `almanac-data`, `almanac-template`, and `.github` itself. Correcting the contributor guide
 that verticals actually show is a separate job, handled by propagation from `almanac-template`.

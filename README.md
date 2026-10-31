@@ -22,7 +22,10 @@ almanac-data/                 ← open Cursor here
   energy-almanac/
   environment-almanac/
   health-almanac/
+  housing-almanac/
   justice-almanac/
+  labor-almanac/
+  population-almanac/
   science-almanac/
   transportation-almanac/
   org-dotgithub/              → almanac-data/.github org profile repo
