@@ -86,12 +86,100 @@ at least once.
 5. **Seed entries.** One PR per entry, international-first, each licence quoted from the
    publisher's own terms page. Then run the link-check workflow once by hand.
 
+## Gaps
+
+From a review of all sixteen verticals on 2026-10-31: 234 entries, 168 of them from national
+agencies, 34 multilateral, 19 regional-bloc and 13 international NGOs.
+
+### Across the catalog
+
+1. **It is overwhelmingly American.**
+   - 134 of the 168 national-agency entries are US. Outside the US (134) and the UK (11),
+     only 11 countries appear: Mexico 5, Canada 4, Australia 3, Brazil, Japan and South
+     Africa 2 each, and Argentina, Costa Rica, Peru, Uruguay and Colombia 1 each.
+   - Seven verticals have no national publisher outside the US at all: agriculture, civic,
+     economy, energy, environment, health and science.
+   - Countries with no entries: China, India, Indonesia, Nigeria, Egypt, the Gulf states,
+     South Korea, and every continental-European national statistics office, such as
+     Destatis, INSEE and Istat. Those are reached only through Eurostat.
+   - Next step: one national publisher from outside the US in each of the seven US-only
+     verticals.
+2. **The "data at risk" machinery is mostly idle.**
+   - Only 3 entries record archived copies in `recovery[]`.
+   - None of the 234 has a `fingerprint` baseline, so the template's revision-drift
+     checker cannot notice a page that changes while its URL still answers.
+   - The entries whose own pages state delays have neither: the DHS monthly tables and the
+     2023 and 2024 Yearbooks, ICE's newest spreadsheet (July 2026), and NOAA's billion-dollar
+     disasters database (climate's thesis entry).
+   - Next step: baselines and archived copies for those entries first. EPA EJScreen, an open
+     request in environment, would be the first real `recovery[]` case if it is confirmed to
+     have been taken offline. Verify before cataloging.
+3. **Licences.** About 48 entries are unverified, restricted or non-commercial, 13 of them in
+   tech and 6 in migration. That is honest, but a share worth re-checking on a schedule:
+   publishers do relicense, as Copernicus did in July 2025.
+4. **Issue hygiene.** On 2026-10-31, twelve open issues asked for work already done and were
+   closed with pointers: economy #1 to #5, civic #1 and #2, and climate #10, #16, #21, #23 and
+   #34.
+   - Climate still carries most of the backlog. It has nine catalog requests (#7 to #15,
+     minus #10) and its pre-engine tooling and epic issues, such as ruff in CI (#22) and a
+     PR template (#24).
+5. **Reachability.** Three entries currently read unreachable:
+   - climate's billion-dollar disasters: expected, it is frozen.
+   - justice's FBI Crime Data Explorer: timeouts.
+   - population's Human Mortality Database: it answered on recheck, so this looks like a
+     transient timeout.
+
+### Inside the verticals
+
+- **health** (11: 9 CDC, 2 WHO): ClinicalTrials.gov; FDA (adverse events, approvals);
+  SAMHSA's National Survey on Drug Use and Health; ECDC; Eurostat and OECD health statistics;
+  any national agency outside the US.
+- **transportation** (9, the smallest): open requests for the National Transit Database
+  (#43), the Freight Analysis Framework (#44) and ITF/UNECE (#45). Nothing on maritime or
+  ports, on aviation outside the US, or on EV charging (the DOE's Alternative Fuels Data
+  Center).
+- **science** (10): the scholarly infrastructure jeles already queries (OpenAlex, Crossref,
+  ORCID), Zenodo, ESA (Gaia), and the IPCC Data Distribution Centre.
+- **climate** (18): the nine open catalog requests. No national weather services beyond the
+  Met Office (DWD, JMA, BoM). No emissions inventories (UNFCCC GHG data, EDGAR, Climate
+  TRACE).
+- **environment** (12, 10 of them EPA): open requests for OpenAQ, Clean Air Markets,
+  EJScreen and SDWIS (#2 to #5). Nothing on biodiversity or forests (Global Forest Watch),
+  and no publishers outside the US.
+- **economy** (12): open requests for FRED (#37) and IMF (#38). No central banks (ECB data
+  portal, Bank of England), no inequality data (World Inequality Database), no OECD
+  statistics.
+- **energy** (11): open requests for IRENA (#45), IEA (#46) and NREL (#47). Nothing on
+  nuclear (the IAEA's reactor database, PRIS).
+- **civic** (13): open requests for data.gov (#4) and Regulations.gov (#3). No lobbying data
+  (US lobbying disclosures, the EU Transparency Register). No elections outside the US
+  beyond the 2024 European Parliament.
+- **justice** (17): nothing outside the US except UK police data. No state-court statistics,
+  and no police use-of-force data. The Palm Beach County grand jury records are still to add.
+- **agriculture** (10): nothing on food security (FEWS NET), fisheries (FAO FishStat) or food
+  assistance (SNAP).
+- **population, labor, housing, tech, migration:** see each one's "still to add" under
+  **Built**.
+
 ## Candidate verticals
 
 ### Other candidates
 
 Not yet ranked.
 
+- **Disasters and hazards.** FEMA disaster declarations and assistance data, ReliefWeb,
+  GDACS, USGS hazard programs, and EM-DAT (whose licence is restrictive). Today this is
+  scattered: climate's thesis entry is a disaster dataset. FEMA's data is the at-risk kind.
+- **Public records and declassified collections.** The Epstein releases proved the
+  `document` type works. A vertical could hold the National Archives' JFK, RFK and MLK
+  records, FOIA reading rooms, unsealed court records and congressional releases. It
+  could start inside justice and civic.
+- **Public spending and procurement.** EU public tenders (TED), Open Contracting data,
+  national budgets. USAspending sits in civic today and could move with it.
+- **Space.** The UN register of objects launched into outer space, satellite catalogues, ESA
+  open data. Some of this is in science and tech today.
+- **Indigenous data.** Worth naming, but only under the CARE principles for Indigenous data
+  governance and with a steward from those communities. Never seed it with an agent.
 - **Geography.** Base layers: Census TIGER/Line, the USGS National Map and GNIS, Eurostat
   GISCO, Natural Earth. These are infrastructure rather than findings, but every vertical's
   `coverage.spatial` points at them.
@@ -148,9 +236,6 @@ can start without engine work.
 
 ## Open questions
 
-- **The old requests.** ACS (economy #4, civic #1) and BLS CPI, CES and LAUS (economy #1 to
-  #3) are now cataloged in population-almanac and labor-almanac, but the issues are still
-  open. Close them with a pointer to the new entries?
 - **CPI in economy.** CPI is cataloged in labor. Should economy's notes cross-reference it?
 - **Cross-vertical entries.** When one dataset clearly serves two verticals (CPI, ACS), the
   rule today is one home. Is a cross-reference field worth an engine change, or are notes
