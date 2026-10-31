@@ -111,9 +111,29 @@ agencies, 34 multilateral, 19 regional-bloc and 13 international NGOs.
    - The entries whose own pages state delays have neither: the DHS monthly tables and the
      2023 and 2024 Yearbooks, ICE's newest spreadsheet (July 2026), and NOAA's billion-dollar
      disasters database (climate's thesis entry).
-   - Next step: baselines and archived copies for those entries first. EPA EJScreen, an open
-     request in environment, would be the first real `recovery[]` case if it is confirmed to
-     have been taken offline. Verify before cataloging.
+   - **Done on 2026-10-31 for 22 entries:** the 6 US migration entries, the 11 Epstein
+     releases, climate's billion-dollar disasters, Climate at a Glance and Sea Ice Index, and
+     environment's GHGRP.
+     - Each got a `recovery[]` Wayback capture with a date (`timestamped`), apart from DOJ's
+       Epstein Library, which has no capture.
+     - Each got a `lead_hash` baseline where the drift checker's plain fetch succeeds, plus a
+       `sha256` for actual files.
+     - Sites that refuse a plain request (DHS, CBP, ICE, USCIS, the FBI Vault, CourtListener)
+       got no fingerprint, on purpose.
+     - The billion-dollar disasters entry also records a capture from 2025-01-01, before
+       NOAA's retirement announcement.
+   - **EPA EJScreen** (environment #44) is the first catalogued takedown. It is `dark` since
+     2025-02-05, with Wayback captures from just before removal, EPA's own 2021 snapshot,
+     and two community reconstructions.
+   - **Still to do:**
+     - **New captures.** Save Page Now and web.archive.org's raw-copy downloads were
+       unreachable from the session that ran this, so no capture was requested. Entries with
+       none (the DOJ Epstein Library, the OPR summary PDF) have none. A scheduled engine job
+       on GitHub's runners could request captures, and hash-verify file artifacts against
+       their `sha256`.
+     - **Promoting the drift checker.** `lead_hash` baselines are inert until the template's
+       revision-drift checker reaches the verticals (template idea 16).
+     - **The rest of the US federal entries.**
 3. **Licences.** About 48 entries are unverified, restricted or non-commercial, 13 of them in
    tech and 6 in migration. That is honest, but a share worth re-checking on a schedule:
    publishers do relicense, as Copernicus did in July 2025.
