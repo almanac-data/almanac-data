@@ -40,6 +40,7 @@ link justice-almanac
 link labor-almanac
 link population-almanac
 link science-almanac
+link tech-almanac
 link transportation-almanac
 link org-dotgithub almanac-data-dotgithub
 

@@ -25,6 +25,7 @@ VERTICALS=(
   labor-almanac
   population-almanac
   science-almanac
+  tech-almanac
   transportation-almanac
 )
 
