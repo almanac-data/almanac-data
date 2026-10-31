@@ -7,30 +7,24 @@ it), and leaves this file once its repository exists and has entries, noted unde
 
 *Started 2026-10-31, when the eleven verticals reached 132 entries.*
 
-## Decided
-
-### `migration-almanac`
-
-Decided 2026-10-31. Migration flows, asylum and refugees, internal displacement, remittances,
-and enforcement and border data. Next step: the repository, then **Adding a vertical**.
-
-- **Why.** This is the clearest fit with the Almanac's reason for existing. US immigration
-  statistics are politically exposed, and their loss would be noticed only if someone had
-  written down where they were.
-- **Boundary with population.** Stocks and demographic change stay in population, which
-  holds the UN DESA International Migrant Stock. Flows, asylum, refugees, displacement and
-  enforcement come here.
-- **Seed candidates.**
-  - International: UNHCR, IOM (Migration Data Portal and the Displacement Tracking Matrix),
-    IDMC, the OECD International Migration Database, Eurostat asylum statistics, World Bank
-    remittances data, Frontex, the UK Home Office, IRCC.
-  - US: DHS OHSS (the Yearbook and monthly tables), CBP encounters, ICE detention
-    statistics, USCIS, EOIR, State Department refugee admissions.
-
 ## Built
 
 Ideas that left this file because their repository exists and has entries.
 
+- **2026-10-31: `migration-almanac` (17 entries).**
+  - **Scope:** flows, asylum, refugees, displacement, remittances, and enforcement and
+    border data. Stocks stay in population.
+  - **First link check:** 16 reachable. Frontex was blocked by bot protection, which isn't
+    counted as dead.
+  - **Delays the US pages state themselves, quoted in the notes:**
+    - The DHS Yearbook's 2023 and 2024 editions show "Download coming soon".
+    - The DHS monthly tables are "delayed while it is under review", with November 2024 the
+      last one posted.
+  - **Still to add:**
+    - State Department visa statistics and the IOM Migration Data Portal. Both were blocked
+      on 2026-10-31.
+  - **Left out on purpose:** TRAC Immigration. Its terms forbid storing its data in another
+    database or collecting it with automated tools.
 - **2026-10-31: `tech-almanac` (20 entries).**
   - **Scope:** digital access, patents, internet measurement, security, and public-sector
     AI data only. Company-hosted training sets and model cards are out.
