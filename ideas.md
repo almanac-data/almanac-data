@@ -102,14 +102,19 @@ Not yet ranked.
 ## Other kinds of entry
 
 The schema's `type` already allows `dataset`, `paper`, `textbook` and `document`, so one schema
-holds them all and verticals become tags. Every one of the 132 entries is a `dataset`. The
-other types are where "other types of data" can start without engine work.
+holds them all and verticals become tags. The other types are where "other types of data"
+can start without engine work.
 
-- **`document`.** Methodology and series documentation, so a discontinuation can be shown
-  next to the series it ended:
-  - a census's technical documentation
-  - NOAA's notice retiring the billion-dollar disasters database (climate's thesis entry)
-  - a statistics agency's revision policy
+- **`document`.** In use since 2026-10-31: eleven official Epstein record releases, nine in
+  justice and two in civic, grouped by `collection: epstein-records`. Next candidates:
+  - Other public records releases: declassified collections such as the JFK, RFK and MLK
+    records at the National Archives, FOIA reading rooms, unsealed court records, and
+    congressional document releases. If they grow, they could become their own vertical.
+  - Methodology and series documentation, so a discontinuation can be shown next to the
+    series it ended:
+    - a census's technical documentation
+    - NOAA's notice retiring the billion-dollar disasters database (climate's thesis entry)
+    - a statistics agency's revision policy
 - **`paper`.** The canonical paper behind a dataset, the one its publisher asks users to cite.
   For example, Christiansen et al. 2025 for the NASA Exoplanet Archive, or Brown & Robinson
   2011 for the snow cover record. One option is a cross-reference from the dataset entry
@@ -124,6 +129,17 @@ other types are where "other types of data" can start without engine work.
     vocabularies that make datasets joinable.
   - **Registries.** Lists of entities rather than measurements, such as company registers or
     school directories.
+  - **`software`: individual code libraries.** Raised 2026-10-31. Data *about* the software
+    ecosystem (package registries, dependency graphs, Software Heritage, OSV) went into tech
+    as datasets. Entries for individual libraries, such as NumPy or React, need decisions
+    first:
+    - **A new `type`.** That is an engine change, made in the template and propagated.
+    - **The publisher.** A library's publisher is its maintainers, and its canonical home is a
+      repository or registry page. That loosens "publisher of record" a lot.
+    - **A cutoff.** There are millions of candidates and no natural cutoff.
+    - **A middle ground:** research software that a body already curates, such as the
+      Astrophysics Source Code Library, the Research Software Directory and Zenodo's
+      software records. It could live in science.
 
 ## Open questions
 
