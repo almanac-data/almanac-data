@@ -1,64 +1,58 @@
 # Ideas
 
 A working list of where the Almanac could grow: new verticals, and kinds of
-entry beyond datasets. Nothing here is a commitment. An idea moves to
-**Decided** when it has an owner and a next step, and leaves this file once
-its repository exists and has entries.
+entry beyond datasets. Nothing here is a commitment. An idea leaves this
+file once its repository exists and has entries, and is noted under **Built**.
 
 *Started 2026-10-31, when the eleven verticals reached 132 entries.*
 
-## Decided
+## Built
 
-The next three verticals, in order. Each needs, in sequence:
+Ideas that left this file because their repository exists and has entries.
 
-1. The repository, created in the org from `almanac-template` (an org admin's step).
-2. Its name added to `VERTICALS` in `scripts/propagate-engine.sh`, so it receives engine
-   changes. willow-bot reads its vertical list from there, so it starts checking the new
-   one with no other change.
-3. Its name added to `ALMANAC_VERTICALS` in jeles' `jeles/sources.py`, then a jeles release,
-   so search reaches it.
-4. Seed entries, one PR per entry, international-first, with each licence checked against
-   the publisher's own terms page.
+- **2026-10-31: `population-almanac` (15 entries), `labor-almanac` (16) and
+  `housing-almanac` (14).** Labor is its own vertical, not part of economy, and holds CPI.
+  All 40 entries outside BLS answered on the first link check.
+  - **Fixed after launch:** bls.gov refused the link checker's headless browser.
+    almanac-template #57 launches full Chromium's new headless mode, which bls.gov serves.
+  - **Still to add:**
+    - Statistics Canada's census and IBGE's Censo 2022. Both sites were behind Cloudflare
+      on 2026-10-31.
+    - The American Housing Survey and HUD CHAS. Both were reachable but left out to keep the
+      first seed small.
+    - BLS QCEW and OEWS.
+    - The OECD Affordable Housing Database, once www.oecd.org can be reached.
 
-### `population-almanac`
+## Adding a vertical
 
-Counts and characteristics of people: censuses, population estimates, projections, vital
-registration as a population input.
+The steps the 2026-10-31 verticals took, in order. Each one was missed or found the hard way
+at least once.
 
-- **Why first.** The American Community Survey was requested twice, in economy-almanac #4 and
-  civic-almanac #1, and neither vertical took it. It belongs to neither of them. Population
-  is the denominator for most per-capita figures elsewhere in the Almanac.
-- **Seed candidates.** US Census Bureau: decennial census, ACS, population estimates. UN
-  World Population Prospects. Eurostat demography. National statistics offices: Statistics
-  Canada (its Open Licence was checked on 2026-10-31: commercial use is allowed, with a
-  required source line and a ban on re-identification), UK ONS, INEGI, IBGE.
-- **Boundary with health.** Vital statistics as health outcomes (CDC NVSS, the WHO mortality
-  database) stay in health. Births and deaths as components of population change belong here.
-
-### `labor-almanac`
-
-Work, employment, wages, prices as they bear on workers, and labour conditions.
-
-- **Decided:** its own vertical, not part of economy. Economy keeps national accounts, trade,
-  finance and business; labour has its own publishers and readers.
-- **Why.** BLS CPI, CES and LAUS have been open requests since economy-almanac's first issues
-  (#1 to #3). The US currently has no labour statistics in the catalog.
-- **Seed candidates.** BLS: CPI, CES, LAUS, JOLTS, CPS. ILOSTAT. OECD employment database.
-  Eurostat labour force survey. UK ONS labour market statistics.
-- **To settle.** CPI is a price index the economy vertical could equally claim. Proposal:
-  CPI lives here, and economy cross-references it in notes rather than duplicating it.
-- **To check first.** Whether bls.gov answers the link checker. If it filters non-browser
-  clients, the entry may need `reachability.headless` in `almanac.config.yml`.
-
-### `housing-almanac`
-
-Shelter: housing stock, costs, tenure, lending, homelessness.
-
-- **Why.** Several federal housing series are exactly what the Almanac exists to track: data
-  under pressure, whose loss would be noticed only if someone had written down where it was.
-- **Seed candidates.** HUD: Fair Market Rents, the Annual Homeless Assessment Report and
-  Point-in-Time counts. Census: American Housing Survey, Housing Vacancies and Homeownership.
-  CFPB: HMDA mortgage data. Eurostat housing statistics. English Housing Survey.
+1. **The repository.** An org admin creates it from `almanac-template`. In its settings,
+   turn on *Actions → General → "Allow GitHub Actions to create and approve pull
+   requests"*, so the link checker can open its observed-refresh PRs. If the willow-ci app
+   is installed on selected repositories only, add the new one, or engine propagation to it
+   fails on authentication.
+2. **Every list of verticals.** The name goes in, alphabetically:
+   - `VERTICALS` in `scripts/propagate-engine.sh`. willow-bot reads its vertical list from
+     this script, so it covers the new one with no change of its own.
+   - `status-all.sh`, `org-profile-counts.sh`, `link-repos.sh` and `.gitignore`.
+   - The README layout.
+   - The draft org profile's table and count.
+   - The `propagate` matrix in almanac-template's `.github/workflows/propagate-engine.yml`.
+3. **The bootstrap PR** in the new repository, following its `SETUP.md`:
+   - `almanac.config.yml`, set `reachability.headless: true` if any source is behind bot
+     protection.
+   - The README from `docs/README.vertical.md`.
+   - The issue-form links and `CODEOWNERS`.
+   - Remove the 17 template-only files no other vertical carries. Left in, the template's
+     own `propagate-engine.yml` tries to fan out from the new repository on every push.
+   - The first real entry in place of `example-dataset.yaml`. Validation fails on an empty
+     catalog.
+4. **Jeles.** Add the name to `ALMANAC_VERTICALS` in `jeles/sources.py`, then let
+   release-please publish, so search reaches it.
+5. **Seed entries.** One PR per entry, international-first, each licence quoted from the
+   publisher's own terms page. Then run the link-check workflow once by hand.
 
 ## Candidate verticals
 
@@ -131,9 +125,10 @@ other types are where "other types of data" can start without engine work.
 
 ## Open questions
 
-- **Numbering of the new verticals' first issues.** Should the old requests (ACS, BLS) be
-  moved into the new repositories' issues once they exist, and closed in economy and civic
-  with a pointer?
+- **The old requests.** ACS (economy #4, civic #1) and BLS CPI, CES and LAUS (economy #1 to
+  #3) are now cataloged in population-almanac and labor-almanac, but the issues are still
+  open. Close them with a pointer to the new entries?
+- **CPI in economy.** CPI is cataloged in labor. Should economy's notes cross-reference it?
 - **Cross-vertical entries.** When one dataset clearly serves two verticals (CPI, ACS), the
   rule today is one home. Is a cross-reference field worth an engine change, or are notes
   enough?
