@@ -2,40 +2,27 @@
 
 A working list of where the Almanac could grow: new verticals, and kinds of
 entry beyond datasets. Nothing here is a commitment. An idea moves to
-**Decided** when its scope is settled, and leaves this file once its repository exists and
-has entries, noted under **Built**.
+**Decided** when its scope is settled (that section appears only while something is in
+it), and leaves this file once its repository exists and has entries, noted under **Built**.
 
 *Started 2026-10-31, when the eleven verticals reached 132 entries.*
-
-## Decided
-
-### `tech-almanac`
-
-Decided 2026-10-31. Data about technology and the digital world, not data that merely
-happens to be digital. Next step: an org admin creates the repository, then the steps in
-**Adding a vertical** below.
-
-- **Digital access.** The FCC National Broadband Map, ITU ICT indicators, Eurostat digital
-  economy and society statistics, Ofcom Connected Nations.
-- **Patents and invention.** USPTO patent data (PatentsView), the EPO's open patent services,
-  WIPO statistics. Science already holds NSF NCSES, which covers R&D spending, so patents sit
-  next to it without overlap.
-- **Internet measurement.** Open measurement of the internet itself: M-Lab, RIPE Atlas, the
-  Internet Archive's crawl metadata, Common Crawl. Licences vary widely. The publisher is the
-  body that runs the measurement, never a mirror of it.
-- **Security.** The NIST National Vulnerability Database, CISA's Known Exploited
-  Vulnerabilities catalog, MITRE CVE. These are US Government or federally funded, are cited
-  constantly, and have had funding scares, so they fit the at-risk thesis.
-- **AI data: public-sector only.** In scope: AI-related data that governments and research
-  bodies publish, such as the OECD.AI policy observatory, NIST's AI resources and the Stanford
-  AI Index. Out of scope: company-hosted training and evaluation sets and model cards. They
-  are hosted by companies or on Hugging Face rather than by a publisher of record, which
-  strains catalog-not-host. Revisit once the vertical has a steward.
 
 ## Built
 
 Ideas that left this file because their repository exists and has entries.
 
+- **2026-10-31: `tech-almanac` (20 entries).**
+  - **Scope:** digital access, patents, internet measurement, security, and public-sector
+    AI data only. Company-hosted training sets and model cards are out.
+  - **First link check:** all 20 reachable.
+  - **Licences:** several sources are deliberately not open. WIPO, the EPO, RIPE Atlas
+    and CAIDA have explicit but restrictive terms, and the ITU DataHub and Cloudflare Radar
+    are non-commercial. Each entry's notes quote the terms.
+  - **Still to add:**
+    - Ofcom Connected Nations and the FCC National Broadband Map. Both were blocked by their
+      CDNs on 2026-10-31.
+    - The Internet Archive's crawl data.
+    - A NIST AI dataset, if one exists as data rather than guidance.
 - **2026-10-31: `population-almanac` (15 entries), `labor-almanac` (16) and
   `housing-almanac` (14).** Labor is its own vertical, not part of economy, and holds CPI.
   All 40 entries outside BLS answered on the first link check.
