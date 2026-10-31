@@ -38,6 +38,7 @@ link health-almanac
 link housing-almanac
 link justice-almanac
 link labor-almanac
+link migration-almanac
 link population-almanac
 link science-almanac
 link tech-almanac

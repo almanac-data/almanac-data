@@ -23,6 +23,7 @@ VERTICALS=(
   housing-almanac
   justice-almanac
   labor-almanac
+  migration-almanac
   population-almanac
   science-almanac
   tech-almanac
