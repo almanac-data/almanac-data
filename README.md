@@ -27,6 +27,7 @@ almanac-data/                 ← open Cursor here
   labor-almanac/
   population-almanac/
   science-almanac/
+  tech-almanac/
   transportation-almanac/
   org-dotgithub/              → almanac-data/.github org profile repo
   scripts/

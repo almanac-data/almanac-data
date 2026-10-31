@@ -22,9 +22,9 @@ where the data lives. The catalog is small enough to read, diff, and trust.
 | [economy](https://github.com/almanac-data/economy-almanac) | [education](https://github.com/almanac-data/education-almanac) | [energy](https://github.com/almanac-data/energy-almanac) |
 | [environment](https://github.com/almanac-data/environment-almanac) | [health](https://github.com/almanac-data/health-almanac) | [housing](https://github.com/almanac-data/housing-almanac) |
 | [justice](https://github.com/almanac-data/justice-almanac) | [labor](https://github.com/almanac-data/labor-almanac) | [population](https://github.com/almanac-data/population-almanac) |
-| [science](https://github.com/almanac-data/science-almanac) | [transportation](https://github.com/almanac-data/transportation-almanac) |  |
+| [science](https://github.com/almanac-data/science-almanac) | [tech](https://github.com/almanac-data/tech-almanac) | [transportation](https://github.com/almanac-data/transportation-almanac) |
 
-All fourteen run the same engine — one schema, one validator, one reachability monitor — maintained
+All fifteen run the same engine — one schema, one validator, one reachability monitor — maintained
 in [`almanac-template`](https://github.com/almanac-data/almanac-template). Verticals differ in
 contents, not machinery.
 
