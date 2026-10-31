@@ -7,6 +7,26 @@ it), and leaves this file once its repository exists and has entries, noted unde
 
 *Started 2026-10-31, when the eleven verticals reached 132 entries.*
 
+## Decided
+
+### `migration-almanac`
+
+Decided 2026-10-31. Migration flows, asylum and refugees, internal displacement, remittances,
+and enforcement and border data. Next step: the repository, then **Adding a vertical**.
+
+- **Why.** This is the clearest fit with the Almanac's reason for existing. US immigration
+  statistics are politically exposed, and their loss would be noticed only if someone had
+  written down where they were.
+- **Boundary with population.** Stocks and demographic change stay in population, which
+  holds the UN DESA International Migrant Stock. Flows, asylum, refugees, displacement and
+  enforcement come here.
+- **Seed candidates.**
+  - International: UNHCR, IOM (Migration Data Portal and the Displacement Tracking Matrix),
+    IDMC, the OECD International Migration Database, Eurostat asylum statistics, World Bank
+    remittances data, Frontex, the UK Home Office, IRCC.
+  - US: DHS OHSS (the Yearbook and monthly tables), CBP encounters, ICE detention
+    statistics, USCIS, EOIR, State Department refugee admissions.
+
 ## Built
 
 Ideas that left this file because their repository exists and has entries.
@@ -76,8 +96,6 @@ Not yet ranked.
 - **Geography.** Base layers: Census TIGER/Line, the USGS National Map and GNIS, Eurostat
   GISCO, Natural Earth. These are infrastructure rather than findings, but every vertical's
   `coverage.spatial` points at them.
-- **Migration.** UNHCR refugee statistics, the DHS Yearbook of Immigration Statistics, IOM's
-  migration data portal. This is politically exposed data, so it fits the at-risk thesis.
 - **Biodiversity.** GBIF, the US Fish and Wildlife species database (ECOS), OBIS. It overlaps
   environment; it may be better as a tag there than as a vertical.
 - **Oceans.** Argo, NOAA tides and currents, Copernicus Marine. Overlaps climate and
