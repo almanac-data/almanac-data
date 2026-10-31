@@ -35,7 +35,10 @@ link education-almanac
 link energy-almanac
 link environment-almanac
 link health-almanac
+link housing-almanac
 link justice-almanac
+link labor-almanac
+link population-almanac
 link science-almanac
 link transportation-almanac
 link org-dotgithub almanac-data-dotgithub

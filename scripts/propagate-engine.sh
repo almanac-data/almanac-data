@@ -20,7 +20,10 @@ VERTICALS=(
   energy-almanac
   environment-almanac
   health-almanac
+  housing-almanac
   justice-almanac
+  labor-almanac
+  population-almanac
   science-almanac
   transportation-almanac
 )
