@@ -25,7 +25,7 @@ Ideas that left this file because their repository exists and has entries.
       on 2026-10-31.
   - **Left out on purpose:** TRAC Immigration. Its terms forbid storing its data in another
     database or collecting it with automated tools.
-- **2026-10-31: `tech-almanac` (20 entries).**
+- **2026-10-31: `tech-almanac` (29 entries: 20 at launch, plus 9 on the software ecosystem).**
   - **Scope:** digital access, patents, internet measurement, security, and public-sector
     AI data only. Company-hosted training sets and model cards are out.
   - **First link check:** all 20 reachable.
@@ -37,6 +37,11 @@ Ideas that left this file because their repository exists and has entries.
       CDNs on 2026-10-31.
     - The Internet Archive's crawl data.
     - A NIST AI dataset, if one exists as data rather than guidance.
+    - crates.io's database dumps. They were added and then removed the same day. The Data
+      Access Policy page exists only inside crates.io's JavaScript app, so the server returns
+      404 to every non-browser request, and the link checker escalates to headless only on
+      block codes, never on a 404. The entry can come back if crates.io serves the page, or
+      if the checker learns to try a browser on a 404 for hosts known to be single-page apps.
 - **2026-10-31: `population-almanac` (15 entries), `labor-almanac` (16) and
   `housing-almanac` (14).** Labor is its own vertical, not part of economy, and holds CPI.
   All 40 entries outside BLS answered on the first link check.
