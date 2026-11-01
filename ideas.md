@@ -55,6 +55,33 @@ Ideas that left this file because their repository exists and has entries.
     - BLS QCEW and OEWS.
     - The OECD Affordable Housing Database, once www.oecd.org can be reached.
 
+## Willow and the Almanac
+
+Willow (willow-memory/Willow) already does much of what the Almanac's upkeep needs. The Almanac,
+in turn, gives willow a curated map of where public data lives. Done on 2026-11-01:
+
+- **Willow → Almanac:**
+  - **Quote check** (almanac-data #12): every quotation in the catalog notes was checked with
+    willow's new `quotes` add-on against a fresh copy of its page. See
+    docs/reviews/2026-11-01-quote-check.md.
+    - Results: 421 of 726 as written. 132 are unverifiable because their pages never rendered.
+      125 are flagged for a steward.
+    - No entry was edited on the check alone: its one apparent misquote was right once the page
+      fully rendered.
+  - **Licence watch** (almanac-data #13): willow's `policy-watch` runs weekly on the 110
+    licence pages the catalogs cite, and opens an issue when one's wording changes. The first
+    run saved 93 copies; 17 pages were blocked.
+- **Almanac → willow:** one willow PR, built here as a patch (willow-almanac-pr.patch, on
+  willow main 40442ab), because this session can't push to willow.
+  - `almanac` passages carry fingerprints, archived copies, kind and collection.
+  - `quotes` checks every quote in a document.
+  - `almanac-keep` fetches an entry's best permitted copy into your own folder. The Almanac
+    points; willow keeps.
+- **Next:**
+  - A steward pass over the quote review's flags.
+  - Moving the licence watch's willow pin once the willow PR merges.
+  - `ro-crate` or `ids` releases of each catalog, and `foia` beside dark entries.
+
 ## Adding a vertical
 
 The steps the 2026-10-31 verticals took, in order. Each one was missed or found the hard way
