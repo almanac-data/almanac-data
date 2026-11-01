@@ -5,7 +5,7 @@ entry beyond datasets. Nothing here is a commitment. An idea moves to
 **Decided** when its scope is settled (that section appears only while something is in
 it), and leaves this file once its repository exists and has entries, noted under **Built**.
 
-*Started 2026-10-31, when the eleven verticals reached 132 entries.*
+*Started 2026-10-31, when the eleven verticals reached 132 entries. On 2026-11-01: seventeen verticals, 314 entries.*
 
 ## How an idea moves
 
@@ -27,6 +27,18 @@ it), and leaves this file once its repository exists and has entries, noted unde
 
 Ideas that left this file because their repository exists and has entries.
 
+- **2026-11-01: `geography-almanac` (15 entries).** Vertical 17, which brings the Almanac to 314
+  entries.
+  - **Contents:** base geography, meaning boundaries, place names, elevation, land cover and base
+    maps:
+    - multilateral: UN SALB, Eurostat GISCO, CORINE, Copernicus DEM
+    - national mapping agencies: Ordnance Survey, NRCan, IGN, INEGI, IBGE, Geoscience Australia,
+      GSI
+    - US: TIGER/Line, The National Map, GNIS
+    - global: Natural Earth
+  - **First link check:** GSI's main site needs a TLS mode modern OpenSSL refuses, so the entry
+    points at GSI's download service instead (#19). CanVec timed out at 12 s (#17).
+  - **Still to add:** NGA's GEOnet Names Server (it reset every connection) and GeoNames.
 - **2026-10-31: `migration-almanac` (17 entries).**
   - **Scope:** flows, asylum, refugees, displacement, remittances, and enforcement and
     border data. Stocks stay in population.
@@ -97,6 +109,25 @@ in turn, gives willow a curated map of where public data lives. Done on 2026-11-
   - A steward pass over the quote review's flags.
   - Moving the licence watch's willow pin once the willow PR merges.
   - `ro-crate` or `ids` releases of each catalog, and `foia` beside dark entries.
+
+## Willow and Jeles
+
+Done 2026-11-01, the same pass as Willow and the Almanac.
+
+- **Jeles → willow:** willow's planned `jeles` add-on, built (willow-jeles-pr.patch, for a
+  session that can push to willow).
+  - `mirror` reads Jeles seed files and corpus stores as passages.
+  - `export` writes sealed answers as a Jeles seed file. Each is paired with a question only when
+    the question's words hash to the key the answer was sealed under. Jeles installs these at
+    `asserted`, because a willow seal isn't a Nestor seal.
+- **willow → Jeles** (hornbook-knowledge/Jeles#110, docs/reviews/2026-11-01-willow-review.md):
+  - willow's `contradictions` and `duplicates` over the seed found nothing to fix.
+  - Of the seed's 1,783 cited URLs, 115 return 404 and 35 don't answer; 44 of those have a
+    Wayback copy.
+  - None is swapped for an archive URL automatically, because Jeles computes commons credit from
+    the cited hosts.
+- **Next:** a curator's pass over the dead citations, and teaching `jeles.commons` to credit the
+  original host for an archived URL.
 
 ## Adding a vertical
 
