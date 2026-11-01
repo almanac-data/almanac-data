@@ -126,11 +126,20 @@ agencies, 34 multilateral, 19 regional-bloc and 13 international NGOs.
      2025-02-05, with Wayback captures from just before removal, EPA's own 2021 snapshot,
      and two community reconstructions.
    - **Still to do:**
-     - **New captures.** Save Page Now and web.archive.org's raw-copy downloads were
-       unreachable from the session that ran this, so no capture was requested. Entries with
-       none (the DOJ Epstein Library, the OPR summary PDF) have none. A scheduled engine job
-       on GitHub's runners could request captures, and hash-verify file artifacts against
-       their `sha256`.
+     - **New captures: built.** `scripts/capture_archives.py` and its weekly workflow (template
+       #60, in every vertical since 2026-11-01) run on GitHub's runners.
+       - Each run asks Save Page Now to capture up to 10 live or frozen entries whose newest
+         capture is missing or older than 90 days, oldest first.
+       - Each capture is recorded as a dated `recovery[]` candidate, `hash-verified` when a
+         file's capture matches its `sha256`.
+       - Captures land in one rolling `monitor/archive-refresh` PR, the same way the
+         link checker's observed-refresh PR works.
+       - First run (justice #55): one fresh capture; one existing capture used because Save
+         Page Now timed out; one with no capture at all (the DOJ Epstein Library, which Save
+         Page Now timed out on).
+       - Save Page Now's 180-second timeout may need raising.
+       - Like the observed-refresh PR, an Actions-opened PR gets no CI, so it needs a
+         validation run before merging.
      - **Promoting the drift checker.** `lead_hash` baselines are inert until the template's
        revision-drift checker reaches the verticals (template idea 16).
      - **The rest of the US federal entries.**
