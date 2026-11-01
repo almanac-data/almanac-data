@@ -14,7 +14,7 @@ it), and leaves this file once its repository exists and has entries, noted unde
   vertical's own "Suggest a dataset" form instead. Those become `[dataset]` issues labelled
   `dataset-suggestion`, and anyone can turn one into an entry.
 - **Pick one up:** no permission is needed. Open a draft pull request that names the idea and links
-  the tracking issue, "Pick up an idea", in this repository. For a vertical, follow **Adding a vertical**
+  the tracking issue, [Pick up an idea (#15)](https://github.com/almanac-data/almanac-data/issues/15). For a vertical, follow **Adding a vertical**
   below. For a dataset, follow the vertical's CONTRIBUTING.md.
 - **When it's done:** an idea leaves **Decided** or **Candidate verticals** for **Built**. A dataset
   issue closes when its entry merges.
