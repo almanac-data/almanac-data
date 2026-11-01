@@ -21,8 +21,9 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # willow at the commit whose policy-watch this was built and tested against.
-  WILLOW_REF: f0c815b58138bc57ff48b907df1de47b1a9c9ce5
+  # willow main as of 2026-11-01 (#138), after the almanac add-ons merged (#135);
+  # policy-watch is unchanged since it was first pinned. Smoke-tested on this commit.
+  WILLOW_REF: 9e85df06eaa3dc52ac0137120749c42b91d20a98
 
 jobs:
   watch:
