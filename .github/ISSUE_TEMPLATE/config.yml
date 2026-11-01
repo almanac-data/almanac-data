@@ -1,5 +1,8 @@
 blank_issues_enabled: true
 contact_links:
+  - name: Pick up an idea
+    url: https://github.com/almanac-data/almanac-data/issues/15
+    about: What's waiting, how to claim one with a draft PR, and what the Almanac never does.
   - name: The idea list
     url: https://github.com/almanac-data/almanac-data/blob/master/ideas.md
     about: Candidate verticals, kinds of entry, gaps, and what's been built. Read it before adding one.
