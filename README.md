@@ -31,6 +31,7 @@ almanac-data/                 ← open Cursor here
   tech-almanac/
   transportation-almanac/
   org-dotgithub/              → almanac-data/.github org profile repo
+  ideas.md                    # candidate verticals and entry types, not yet built
   scripts/
     link-repos.sh             # (re)create symlinks after clone
     propagate-engine.sh       # template → all verticals

@@ -1,0 +1,45 @@
+name: An idea for the Almanac
+description: A new vertical, a new kind of entry, or engine work. Anyone can pick it up.
+labels: ["idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A single dataset belongs in its vertical instead: each vertical repository has a
+        "Suggest a dataset" form. This form is for everything bigger. You can also add an
+        idea yourself, as a pull request to [ideas.md](https://github.com/almanac-data/almanac-data/blob/master/ideas.md);
+        read it first, since yours may already be there.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of idea
+      options:
+        - A new vertical
+        - A new kind of entry (a type, or a field)
+        - Engine or tooling (almanac-template, scripts, workflows)
+        - Something else
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      description: For a vertical, its repository name, such as geography-almanac
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What it is, in a sentence or two
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters
+      description: Who would use it, and whether the data involved is at risk of disappearing
+  - type: textarea
+    id: sources
+    attributes:
+      label: Example sources, or where it overlaps
+      description: For a vertical, a few authoritative publishers; and which existing vertical comes closest
