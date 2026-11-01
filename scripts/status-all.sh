@@ -4,11 +4,22 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 VERTICALS=(
-  climate-almanac
-  health-almanac
-  economy-almanac
-  environment-almanac
+  agriculture-almanac
   civic-almanac
+  climate-almanac
+  economy-almanac
+  education-almanac
+  energy-almanac
+  environment-almanac
+  health-almanac
+  housing-almanac
+  justice-almanac
+  labor-almanac
+  migration-almanac
+  population-almanac
+  science-almanac
+  tech-almanac
+  transportation-almanac
 )
 
 failures=0

@@ -22,8 +22,13 @@ almanac-data/                 ← open Cursor here
   energy-almanac/
   environment-almanac/
   health-almanac/
+  housing-almanac/
   justice-almanac/
+  labor-almanac/
+  migration-almanac/
+  population-almanac/
   science-almanac/
+  tech-almanac/
   transportation-almanac/
   org-dotgithub/              → almanac-data/.github org profile repo
   ideas.md                    # candidate verticals and entry types, not yet built
@@ -31,6 +36,8 @@ almanac-data/                 ← open Cursor here
     link-repos.sh             # (re)create symlinks after clone
     propagate-engine.sh       # template → all verticals
     status-all.sh             # validate + link-check every vertical
+    licence_urls.py           # every licence/terms page the catalogs cite
+    licence_watch.py          # willow's policy-watch over them (weekly: licence-watch.yml)
 ```
 
 Repos live as siblings under `~/github/`. Run `./scripts/link-repos.sh` if a symlink is missing.
