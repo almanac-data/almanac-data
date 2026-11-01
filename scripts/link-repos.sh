@@ -34,6 +34,7 @@ link economy-almanac
 link education-almanac
 link energy-almanac
 link environment-almanac
+link geography-almanac
 link health-almanac
 link housing-almanac
 link justice-almanac
