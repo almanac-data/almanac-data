@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: The idea list
+    url: https://github.com/almanac-data/almanac-data/blob/master/ideas.md
+    about: Candidate verticals, kinds of entry, gaps, and what's been built. Read it before adding one.
+  - name: Suggest a dataset
+    url: https://github.com/almanac-data
+    about: A single dataset goes to its vertical's own "Suggest a dataset" form; pick the vertical here.
+  - name: Wanted datasets, across every vertical
+    url: https://github.com/search?q=org%3Aalmanac-data+label%3Adataset-suggestion+state%3Aopen&type=issues
+    about: Every open dataset request; each is a good first entry to add.

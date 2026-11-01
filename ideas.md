@@ -7,6 +7,22 @@ it), and leaves this file once its repository exists and has entries, noted unde
 
 *Started 2026-10-31, when the eleven verticals reached 132 entries.*
 
+## How an idea moves
+
+- **Add one:** use the [idea form](https://github.com/almanac-data/almanac-data/issues/new?template=idea.yml)
+  (labelled `idea`), or open a pull request that adds it to this file. A single dataset goes to its
+  vertical's own "Suggest a dataset" form instead. Those become `[dataset]` issues labelled
+  `dataset-suggestion`, and anyone can turn one into an entry.
+- **Pick one up:** no permission is needed. Open a draft pull request that names the idea and links
+  the tracking issue, "Pick up an idea", in this repository. For a vertical, follow **Adding a vertical**
+  below. For a dataset, follow the vertical's CONTRIBUTING.md.
+- **When it's done:** an idea leaves **Decided** or **Candidate verticals** for **Built**. A dataset
+  issue closes when its entry merges.
+- **Never:**
+  - Host data. The Almanac catalogs where data lives; `recovery[]` points to copies.
+  - State a licence the publisher doesn't. Write `unverified` and say what you found.
+  - Let a machine set `status`. Automation records facts in `observed`; a person changes the label.
+
 ## Built
 
 Ideas that left this file because their repository exists and has entries.
