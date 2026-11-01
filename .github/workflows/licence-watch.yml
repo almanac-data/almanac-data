@@ -1,0 +1,79 @@
+name: licence-watch
+
+# Weekly: every licence and terms page the verticals' catalog entries cite,
+# compared sentence by sentence with last week's copy by willow's policy-watch
+# (willow-memory/Willow, pinned below). Publishers relicense (Copernicus did in
+# July 2025), and an entry's `license` is only as good as its last check.
+#
+# Page copies live in the Actions cache between runs and are never committed:
+# the Almanac catalogs, it doesn't host.
+on:
+  schedule:
+    - cron: "41 9 * * 1"   # Mondays 09:41 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: licence-watch
+  cancel-in-progress: false
+
+env:
+  # willow at the commit whose policy-watch this was built and tested against.
+  WILLOW_REF: f0c815b58138bc57ff48b907df1de47b1a9c9ce5
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: willow-memory/Willow
+          ref: ${{ env.WILLOW_REF }}
+          path: willow
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Restore last week's copies
+        uses: actions/cache/restore@v4
+        with:
+          path: licence-copies
+          key: licence-copies-${{ github.run_id }}
+          restore-keys: licence-copies-
+      - name: Watch every cited licence page
+        run: python scripts/licence_watch.py --willow willow --copies licence-copies --report licence-report.md
+      - name: Keep this week's copies
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: licence-copies
+          key: licence-copies-${{ github.run_id }}
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: licence-report
+          path: licence-report.md
+
+      - name: Open or update the licence-change issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          changed=$(head -1 licence-report.md | sed 's/^changed: //')
+          if [ "${changed:-0}" = "0" ]; then
+            echo "no licence page changed its wording"
+            exit 0
+          fi
+          title="Licence pages changed their wording"
+          body=$(printf '%s\n\nRun: %s\n' "$(tail -n +3 licence-report.md)" "$RUN_URL")
+          open=$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[0].number')
+          if [ -n "$open" ]; then
+            gh issue comment "$open" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body"
+          fi

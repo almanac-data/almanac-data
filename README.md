@@ -35,6 +35,8 @@ almanac-data/                 ← open Cursor here
     link-repos.sh             # (re)create symlinks after clone
     propagate-engine.sh       # template → all verticals
     status-all.sh             # validate + link-check every vertical
+    licence_urls.py           # every licence/terms page the catalogs cite
+    licence_watch.py          # willow's policy-watch over them (weekly: licence-watch.yml)
 ```
 
 Repos live as siblings under `~/github/`. Run `./scripts/link-repos.sh` if a symlink is missing.
