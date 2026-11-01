@@ -37,6 +37,7 @@ ENGINE_PATHS=(
   scripts/build_index.py
   scripts/check_links.py
   scripts/alert_on_dead_links.py
+  scripts/capture_archives.py
   scripts/migrate_v1_v2.py
   requirements.txt
   requirements-headless.txt
@@ -44,6 +45,7 @@ ENGINE_PATHS=(
   tests/test_catalog.py
   .github/workflows/ci.yml
   .github/workflows/link-check.yml
+  .github/workflows/capture-archives.yml
   CONTRIBUTING.md
   SCHEMA-V2.md
   AGENTS.md
