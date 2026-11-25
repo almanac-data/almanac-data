@@ -47,6 +47,8 @@ ENGINE_PATHS=(
   .github/workflows/ci.yml
   .github/workflows/link-check.yml
   .github/workflows/capture-archives.yml
+  .github/dependabot.yml
+  .github/workflows/dependabot-automerge.yml
   CONTRIBUTING.md
   SCHEMA-V2.md
   AGENTS.md
